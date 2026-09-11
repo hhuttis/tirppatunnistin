@@ -1,0 +1,42 @@
+name: Julkaise Tirppatunnistin
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  julkaise:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Hae repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Kokoa sivusto
+        run: python3 build.py
+
+      - name: Valmistele Pages
+        uses: actions/configure-pages@v5
+
+      - name: Lataa sivusto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Julkaise
+        id: deploy
+        uses: actions/deploy-pages@v4
