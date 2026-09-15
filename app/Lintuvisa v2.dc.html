@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,200..700,0,0&amp;display=swap" rel="stylesheet">
+  <script src="./bird-data.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
+    body {
+      --card: rgba(28,33,41,.72); --card-bd: rgba(255,255,255,.14); --surface: rgba(255,255,255,.06); --surface-2: rgba(255,255,255,.07); --surface-bd: rgba(255,255,255,.13);
+      --hair: rgba(255,255,255,.12); --pill-bd: rgba(255,255,255,.18); --opt-bg: rgba(255,255,255,.06); --img-bg: rgba(255,255,255,.06); --audio-bg: rgba(255,255,255,.07); --hover: rgba(255,255,255,.1); --blur: blur(16px); --shadow: none;
+      --ink: #f2f4f6; --ink-2: #dfe3e7; --ink-3: #c3cad1; --muted: #aeb6be; --faint: #98a1a9; --dim: #8b949c; --dim-2: #7c858d;
+      --btn-bg: #eef1f4; --btn-fg: #141a20; --bar-bg: rgba(16,19,24,.72); --wave: rgba(255,255,255,.22); --wave-off: rgba(255,255,255,.3); --audio-off: rgba(255,255,255,.28);
+      --opt-ok-bd: #2c5740; --opt-bad-bd: #5e352b; --ok: #6ec894; --ok-bg: #234634; --ok-bd: #2c5740; --ok-fg: #b9f0d0; --verdict-note: #ffffff;
+      --bad: #e8836c; --bad-bg: #4a2820; --bad-bd: #5e352b; --bad-fg: #fcc7b5;
+      --tag-ok-bg: #2c5740; --tag-ok-bd: #2c5740; --tag-bad-bg: #5e352b; --tag-bad-bd: #5e352b;
+      --grid-ok-bd: #2c5740; --grid-bad-bd: #5e352b;
+      --miss-bg: #4a2820; --miss-bd: #4a2820; --miss-fg: #f9bdaa; --fact: #e0b366;
+      --chip-bg: rgba(120,155,215,.2); --chip-bd: rgba(160,190,240,.32); --chip-fg: #c6d5f2; --chip-ico: #a3b4d6; --score: #e8eefb; --mode-on: rgba(126,163,224,.2);
+      --fade: linear-gradient(to bottom, rgba(57,64,75,0), rgba(57,64,75,.95));
+      --overlay: linear-gradient(to top, rgba(14,16,20,.86) 0%, rgba(18,21,26,.78) 45%, rgba(30,34,40,.68) 100%);
+      background-color: #39404b; background-image: none;
+      color: var(--ink); font-family: 'Open Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+    }
+    body.lv-hero { background-image: url('uploads/pasted-1788801998108-0.png') !important; background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; }
+    body.lv-light {
+      --card: #ffffff; --card-bd: #d8d2c6; --surface: #ffffff; --surface-2: #f7f5ef; --surface-bd: #dedad1;
+      --hair: #ebe7de; --pill-bd: #dedad1; --opt-bg: #ffffff; --img-bg: #eeece6; --audio-bg: #ffffff; --hover: #f4f2ec; --blur: none; --shadow: none;
+      --ink: #20201d; --ink-2: #3f3d38; --ink-3: #57544d; --muted: #6b6a63; --faint: #918d83; --dim: #a8a49a; --dim-2: #b5b1a7;
+      --btn-bg: #20201d; --btn-fg: #f6f4ef; --bar-bg: rgba(252,250,246,.94); --wave: #cfc9bd; --wave-off: #ddd8cf; --audio-off: #b5b1a7;
+      --opt-ok-bd: #2f7d4d; --opt-bad-bd: #c2513c; --ok: #1f7a3f; --ok-bg: #f2f7f2; --ok-bd: #cfe2d0; --ok-fg: #245c34; --verdict-note: #6b6a63;
+      --bad: #b23b28; --bad-bg: #fdf3f0; --bad-bd: #eed6cd; --bad-fg: #9e3524;
+      --tag-ok-bg: #e8f1e9; --tag-ok-bd: #c6ddc9; --tag-bad-bg: #f9e6e1; --tag-bad-bd: #eecdc4;
+      --grid-ok-bd: #cfdccf; --grid-bad-bd: #e0cfc6;
+      --miss-bg: #f7f0ec; --miss-bd: #f7f0ec; --miss-fg: #8a4d3d; --fact: #b5893f;
+      --chip-bg: #eef2fb; --chip-bd: #d9e2f5; --chip-fg: #4a5c85; --chip-ico: #7c8bab; --score: #1b2a4a; --mode-on: #eef1f6;
+      --fade: linear-gradient(to bottom, rgba(246,244,239,0), rgba(246,244,239,.95));
+      --overlay: linear-gradient(to top, rgba(246,244,239,.94) 0%, rgba(246,244,239,.9) 45%, rgba(246,244,239,.84) 100%);
+      background-color: #f6f4ef; background-image: none;
+    }
+    a { color: #2f6b4f; text-decoration: none; }
+    a:hover { color: #1f4d38; }
+    input, button { font-family: inherit; }
+    @keyframes lvIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @keyframes lvFade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes lvPulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+    @keyframes lvPop { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.18); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes lvPts { 0% { opacity: 0; transform: translateY(6px); } 20% { opacity: 1; transform: translateY(0); } 65% { opacity: 1; transform: translateY(-10px); } 100% { opacity: 0; transform: translateY(-20px); } }
+    @keyframes lvFeather { 0% { opacity: 0; transform: translateY(6px) rotate(-8deg); } 20% { opacity: 1; transform: translateY(-8px) rotate(6deg); } 60% { opacity: 1; transform: translateY(-20px) rotate(-6deg); } 100% { opacity: 0; transform: translateY(-34px) rotate(8deg); } }
+  </style>
+</helmet>
+<div style="min-height: 100dvh; overflow-x: hidden; display: flex; flex-direction: column; gap: {{ pageGap }}; padding: {{ pagePad }};">
+
+  <sc-if value="{{ inGame }}" hint-placeholder-val="{{ false }}">
+  <div data-popover="theme" style="position: {{ kebabPos }}; right: 16px; top: 14px; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+    <button onClick="{{ toggleThemeMenu }}" title="Teema" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: {{ kebabFg }}; border-radius: 8px; cursor: pointer; font-family: 'Material Symbols Rounded'; font-size: 20px; line-height: 1; font-variation-settings: 'FILL' 0, 'wght' 300; transition: color .18s ease;" style-hover="color: {{ kebabFgHover }};">more_vert</button>
+    <sc-if value="{{ themeMenuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="width: 208px; background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 12px; padding: 6px; box-shadow: 0 14px 34px rgba(0,0,0,.45); display: flex; flex-direction: column; gap: 2px; animation: lvIn .18s ease-out;">
+        <button onClick="{{ pickLight }}" style="border: none; background: {{ lightBg }}; text-align: left; padding: 10px 12px; border-radius: 9px; cursor: pointer; display: flex; gap: 9px; align-items: center; font-size: 14px; font-weight: 400; color: var(--ink);" style-hover="background: var(--surface);">
+          <span style="width: 14px; flex: 0 0 14px; font-size: 13px;">{{ lightCheck }}</span>
+          <span>Vaalea teema</span>
+        </button>
+        <button onClick="{{ pickDark }}" style="border: none; background: {{ darkBg }}; text-align: left; padding: 10px 12px; border-radius: 9px; cursor: pointer; display: flex; gap: 9px; align-items: center; font-size: 14px; font-weight: 400; color: var(--ink);" style-hover="background: var(--surface);">
+          <span style="width: 14px; flex: 0 0 14px; font-size: 13px;">{{ darkCheck }}</span>
+          <span>Tumma teema</span>
+        </button>
+      </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ showGameBg }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: -1; pointer-events: none;">
+      <img src="uploads/pasted-1788801998108-0.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: {{ heroImgShow }};">
+      <div style="position: absolute; inset: 0; background: var(--overlay);"></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ false }}">
+  <div style="display: grid; grid-template-columns: {{ headerCols }}; grid-template-rows: 34px auto; column-gap: 22px; row-gap: 12px; align-items: start;">
+    <div style="grid-column: 1; grid-row: 1; height: 34px; display: flex; align-items: flex-end;">
+      <sc-if value="{{ showPageEyebrow }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint);">Tirppatunnistin</div>
+      </sc-if>
+    </div>
+    <div style="grid-column: 1; grid-row: 2; display: flex; align-items: center;">
+      <sc-if value="{{ inGame }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ quit }}" title="Etusivulle" style="display: flex; align-items: center; gap: 4px; border: none; background: transparent; color: var(--ink); font-size: 26px; line-height: 1; font-weight: 700; letter-spacing: -0.03em; padding: 2px 8px 2px 2px; margin-left: -10px; border-radius: 9px; cursor: pointer;" style-hover="background: var(--hover);">
+          <span style="font-family: 'Material Symbols Rounded'; font-size: 30px; line-height: 1; font-weight: 300; font-variation-settings: 'FILL' 0, 'wght' 250; color: var(--faint);">chevron_left</span>
+          <span style="text-align: left;">{{ modeTitle }}</span>
+        </button>
+      </sc-if>
+      <sc-if value="{{ isStartCard }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <h1 style="margin: 0; font-size: 26px; line-height: 1.15; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); text-wrap: pretty;">Kuinka hyvin tunnet Suomen linnut?</h1>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink-3);">Opettele yleisimmät lintulajit tuntomerkkien, äänen ja elinympäristön avulla</p>
+        </div>
+      </sc-if>
+    </div>
+    <div style="grid-column: 2; grid-row: 2; display: flex; align-items: flex-end; justify-content: flex-end;"></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isStartHero }}" hint-placeholder-val="{{ false }}">
+    <div style="position: relative; flex: 1 1 auto; min-height: {{ heroMinH }}; border-radius: {{ heroRadius }}; overflow: hidden; display: flex; align-items: {{ heroAlign }};">
+      <img src="uploads/pasted-1788801998108-0.png" alt="Pulmussirriparvi rantavedessä" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: {{ heroImgShow }};">
+      <div style="position: absolute; inset: 0; background: {{ heroScrim }};"></div>
+      <div style="position: relative; z-index: 2; width: 100%; display: flex; flex-wrap: wrap; gap: {{ heroGap }}; align-items: {{ heroAlign }}; justify-content: space-between; padding: {{ heroPad }};">
+        <div style="flex: 1 1 300px; max-width: 620px; display: flex; flex-direction: column; gap: 14px;">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: {{ heroEyebrowFg }};">Tirppatunnistin</span>
+          <h1 style="margin: 0; font-size: {{ heroTitleSize }}; line-height: 1.02; font-weight: 700; letter-spacing: -0.03em; color: {{ heroFg }}; text-wrap: pretty;"><span style="font-size: {{ heroTitleSpan }};">Suomen linnut tutuiksi</span></h1>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{ heroSubFg }}; max-width: 46ch;">Opettele yleisimmät lintulajit tuntomerkkien, äänten ja elinympäristöjen avulla. Harjoittele omaan tahtiisi tai testaa taitosi visassa.</p>
+          <span style="font-size: 10px; color: {{ heroCreditFg }};">Kuva: Pulmusirrit, Brocken Inaglory / Wikipedia</span>
+        </div>
+        <div style="flex: {{ glassFlex }}; min-width: 0; display: flex; flex-direction: column; gap: 11px; padding: 14px; align-self: {{ glassAlign }}; max-height: {{ glassMaxH }}; overflow: hidden; background: {{ glassBg }}; border: 1px solid {{ glassBd }}; border-radius: 14px; backdrop-filter: blur(14px); box-shadow: 0 18px 40px rgba(12,12,10,.18);">
+          <div style="flex: 0 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 11px;">
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <div style="font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: {{ heroLabelFg }};">Pelimuoto</div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <sc-for list="{{ heroModes }}" as="hm" hint-placeholder-count="3">
+                <button onClick="{{ hm.click }}" style="border: 1.5px solid {{ hm.bd }}; background: {{ hm.bg }}; color: {{ hm.fg }}; text-align: left; padding: 9px 12px; border-radius: 10px; cursor: pointer; display: flex; flex-direction: column; gap: 2px;">
+                  <span style="font-size: 14px; font-weight: 600;">{{ hm.label }}</span>
+                  <sc-if value="{{ showHeroDesc }}" hint-placeholder-val="{{ true }}">
+                    <span style="font-size: 13px; line-height: 1.35; color: {{ hm.descFg }};">{{ hm.desc }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <div style="font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: {{ heroLabelFg }};">Lajiryhmä</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <sc-for list="{{ heroScopes }}" as="hs" hint-placeholder-count="5">
+                <button onClick="{{ hs.click }}" style="border: 1.5px solid {{ hs.bd }}; background: {{ hs.bg }}; color: {{ hs.fg }}; padding: 6px 12px; border-radius: 999px; font-size: 13.5px; font-weight: 500; cursor: pointer; white-space: nowrap;">{{ hs.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+            <div style="display: flex; flex-direction: column; gap: 7px; visibility: {{ lenVis }}; pointer-events: {{ lenEvents }}; transition: opacity .18s ease; opacity: {{ lenOpacity }};">
+              <div style="font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: {{ heroLabelFg }};">Kierroksen pituus</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <sc-for list="{{ heroLens }}" as="hl" hint-placeholder-count="2">
+                  <button onClick="{{ hl.click }}" style="border: 1.5px solid {{ hl.bd }}; background: {{ hl.bg }}; color: {{ hl.fg }}; padding: 6px 12px; border-radius: 999px; font-size: 13.5px; font-weight: 500; cursor: pointer; white-space: nowrap;">{{ hl.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <button onClick="{{ start }}" style="flex: 0 0 auto; height: 46px; border: none; background: {{ heroCtaBg }}; color: {{ heroCtaFg }}; padding: 0 20px; border-radius: 11px; font-size: 15px; font-weight: 600; cursor: pointer;">{{ startLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="display: flex; flex-wrap: wrap; gap: {{ colGap }}; align-items: stretch; min-height: {{ rowMinH }};">
+
+    <sc-if value="{{ showClue }}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1 1 380px; min-width: 240px; display: flex;">
+      <div style="position: relative; flex: 1 1 auto; display: flex; flex-direction: column; background: {{ cardBg }}; border: {{ cardBorder }}; backdrop-filter: {{ cardBlur }}; -webkit-backdrop-filter: {{ cardBlur }}; border-radius: 12px; overflow: hidden; box-shadow: {{ cardShadow }};">
+        <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; right: 8px; top: 8px; z-index: 6; display: flex; gap: 2px; padding: 2px; background: {{ tabWrapBg }}; border: 1px solid {{ tabWrapBd }}; border-radius: 8px; backdrop-filter: blur(6px);">
+            <button onClick="{{ pickTabImg }}" style="height: 30px; border: none; background: {{ tabImgBg }}; color: {{ tabImgFg }}; padding: 0 11px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer;">Kuva</button>
+            <button onClick="{{ pickTabInfo }}" style="height: 30px; border: none; background: {{ tabInfoBg }}; color: {{ tabInfoFg }}; padding: 0 11px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer;">Tiedot</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: {{ verdictInset }}; right: {{ verdictInset }}; top: {{ verdictInset }}; border-radius: {{ verdictRadius }}; overflow: hidden; z-index: 5; display: flex; gap: 9px; align-items: center; padding: 18px 16px; background: {{ verdictBg }}; border-bottom: 1px solid {{ verdictBd }}; border-left: 4px solid {{ verdictColor }}; animation: lvFade .12s linear;">
+            <span style="font-family: 'Material Symbols Rounded'; font-size: 19px; line-height: 1; font-variation-settings: 'FILL' 0, 'wght' 400; color: {{ verdictColor }};">{{ verdictIcon }}</span>
+            <span style="font-size: 14px; font-weight: 700; color: {{ verdictColor }}; white-space: nowrap;">{{ verdict }}</span>
+            <span style="font-size: 14px; line-height: 1.3; color: var(--verdict-note); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ verdictNote }}</span>
+          </div>
+        </sc-if>
+        <div style="flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px; padding: {{ rowPad }};">
+        <sc-if value="{{ showInfoCol }}" hint-placeholder-val="{{ true }}">
+        <div style="position: relative; flex: 1 1 170px; min-width: 150px; display: flex; flex-direction: column; gap: 18px;">
+          <sc-if value="{{ showTitle }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; opacity: {{ titleOpacity }};">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">{{ clueLabel }}</span>
+              <span style="font-size: 24px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; color: {{ clueNameColor }};">{{ clueName }}</span>
+            </div>
+          </div>
+          </sc-if>
+
+
+
+          <sc-if value="{{ showDetails }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 0;">
+            <div style="display: flex; gap: 14px; padding: 0 0 13px; font-size: 14px; line-height: 1.55;">
+              <span style="flex: 0 0 104px; color: var(--muted);">Koko</span>
+              <span style="flex: 1 1 auto; color: var(--ink-2);">{{ clueSize }}</span>
+            </div>
+            <div style="height: 1px; background: var(--hair);"></div>
+            <div style="display: flex; gap: 14px; padding: 13px 0; font-size: 14px; line-height: 1.55;">
+              <span style="flex: 0 0 104px; color: var(--muted);">Tuntomerkit</span>
+              <span style="flex: 1 1 auto; color: var(--ink-2); text-wrap: pretty;">{{ clueMarks }}</span>
+            </div>
+            <div style="height: 1px; background: var(--hair);"></div>
+            <div style="display: flex; gap: 14px; padding: 13px 0; font-size: 14px; line-height: 1.55;">
+              <span style="flex: 0 0 104px; color: var(--muted);">Elinympäristö</span>
+              <span style="flex: 1 1 auto; color: var(--ink-2); text-wrap: pretty;">{{ clueHab }}</span>
+            </div>
+            <sc-if value="{{ showSound }}" hint-placeholder-val="{{ true }}">
+              <div style="height: 1px; background: var(--hair);"></div>
+              <div style="display: flex; gap: 14px; padding: 13px 0 0; font-size: 14px; line-height: 1.55;">
+                <span style="flex: 0 0 104px; color: var(--muted);">Ääni</span>
+                <span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 9px; align-items: flex-start;">
+                  <span style="color: var(--ink-2); text-wrap: pretty;">{{ clueSound }}</span>
+                  <div style="width: 100%; display: flex; align-items: flex-start; gap: 12px; background: var(--audio-bg); border: 1px solid var(--surface-bd); border-radius: 6px; padding: 10px 14px 10px 10px;">
+                    <button onClick="{{ toggleAudio }}" title="{{ audioLabel }}" style="flex: 0 0 auto; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border: none; background: {{ audioBtnBg }}; color: var(--btn-fg); border-radius: 999px; cursor: pointer;" style-hover="opacity: .88;">
+                      <span style="font-family: 'Material Symbols Rounded'; font-size: 19px; line-height: 1; font-variation-settings: 'FILL' 1, 'wght' 400;">{{ audioIcon }}</span>
+                    </button>
+                    <div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 5px;">
+                      <div onClick="{{ seek }}" style="height: 34px; min-width: 0; display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 2px; cursor: pointer; overflow: hidden;">
+                        <sc-for list="{{ auBars }}" as="bar" hint-placeholder-count="34">
+                          <span style="flex: 0 0 4px; width: 4px; height: {{ bar.h }}; background: {{ bar.bg }}; border-radius: 999px; transition: background .18s ease;"></span>
+                        </sc-for>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; gap: 10px; font-size: 11px; color: var(--faint);">
+                        <span>{{ auCur }}</span>
+                        <span>{{ auNote }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </sc-if>
+          </div>
+          </sc-if>
+
+        </div>
+        </sc-if>
+        <sc-if value="{{ showClueImage }}" hint-placeholder-val="{{ true }}">
+        <div style="order: {{ imgOrder }}; flex: 0 1 {{ imgBasis }}; min-width: 150px; align-self: stretch; display: flex;">
+          <div style="position: relative; width: 100%; height: 100%; min-height: {{ imgMinH }}; background: var(--img-bg); border: {{ imgBorder }}; border-radius: {{ imgRadius }}; overflow: hidden;">
+            <div style="position: absolute; inset: 0; z-index: 1; opacity: {{ imgOpacity }}; transition: opacity .5s ease;">{{ slot }}</div>
+            <sc-if value="{{ imgMissing }}" hint-placeholder-val="{{ false }}">
+              <div style="position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--dim);">Kuvaa ei löytynyt</div>
+            </sc-if>
+            <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+              <div style="position: absolute; left: 0; right: 0; top: 0; height: 96px; z-index: 2; pointer-events: none; background: linear-gradient(to bottom, rgba(10,12,15,.55), rgba(10,12,15,0));"></div>
+            </sc-if>
+            <sc-if value="{{ showVariantNav }}" hint-placeholder-val="{{ false }}">
+              <div style="position: absolute; left: 10px; top: 10px; z-index: 4; display: flex; align-items: center; gap: 2px; padding: 3px; background: rgba(20,23,28,.52); border: 1px solid rgba(255,255,255,.18); border-radius: 999px; backdrop-filter: blur(10px);">
+                <button onClick="{{ prevVariant }}" title="Edellinen kuva" style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: #f4f6f8; border-radius: 999px; cursor: pointer; font-family: 'Material Symbols Rounded'; font-size: 18px; line-height: 1;" style-hover="background: rgba(255,255,255,.16);">chevron_left</button>
+                <span style="min-width: 34px; text-align: center; font-size: 11.5px; font-weight: 600; color: #f4f6f8;">{{ variantLabel }}</span>
+                <button onClick="{{ nextVariant }}" title="Seuraava kuva" style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: #f4f6f8; border-radius: 999px; cursor: pointer; font-family: 'Material Symbols Rounded'; font-size: 18px; line-height: 1;" style-hover="background: rgba(255,255,255,.16);">chevron_right</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ showGroupTag }}" hint-placeholder-val="{{ true }}">
+              <span style="position: absolute; right: 10px; bottom: 10px; z-index: 3; display: flex; align-items: center; padding: 6px 12px; background: rgba(255,255,255,.86); border: 1px solid rgba(30,30,30,.14); border-radius: 999px; font-size: 12.5px; font-weight: 600; color: #23262b; backdrop-filter: blur(10px); white-space: nowrap;">{{ clueGroup }}</span>
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isStartCard }}" hint-placeholder-val="{{ true }}">
+    <div style="flex: 1 1 380px; min-width: 240px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="position: relative; flex: 1 1 auto; width: 100%; min-height: 260px; background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 8px; overflow: hidden;">
+        <img src="uploads/pasted-1788801998108-0.png" alt="Pulmussirriparvi rantavedessä" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;">
+        <span style="position: absolute; left: {{ creditLeft }}; right: 8px; bottom: 8px; max-width: calc(100% - 16px); font-size: {{ creditSize }}; line-height: 1.3; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #c3cad1; background: rgba(255,255,255,.86); padding: 3px 7px; border-radius: 4px;">Pulmussirrejä (Calidris alba) · Kuva: Brocken Inaglory / Wikipedia</span>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <div style="order: {{ gridOrder }}; flex: 1 1 380px; min-width: 240px; display: flex; flex-direction: column; gap: 10px;">
+      <div style="background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--shadow);">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint);">Kierroksen lajit</span>
+          <span style="font-size: 13px; color: var(--faint);">{{ resultLine }}</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px;">
+          <sc-for list="{{ resultBirds }}" as="b" hint-placeholder-count="10">
+            <div style="display: flex; flex-direction: column; background: var(--surface); border: 1px solid {{ b.bd }}; border-radius: 10px; overflow: hidden; opacity: {{ b.op }}; box-shadow: {{ b.shadow }}; transition: opacity .2s ease;">
+              <span style="display: flex; align-items: center; gap: 5px; padding: 5px 9px; background: {{ b.markBg }};">
+                <span style="font-size: 11px; font-weight: 700; line-height: 1; color: #ffffff;">{{ b.mark }}</span>
+                <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.02em; color: #ffffff;">{{ b.tag }}</span>
+              </span>
+              <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: var(--surface);">
+                <span style="position: absolute; inset: 0; filter: {{ b.filter }};">{{ b.slot }}</span>
+                <span style="position: absolute; inset: 0; background: {{ b.tint }};"></span>
+              </div>
+              <span style="padding: 8px 10px 9px; background: var(--surface); font-size: 12.5px; font-weight: 600; line-height: 1.3; color: var(--ink); text-wrap: pretty;">{{ b.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <div style="order: {{ panelOrder }}; flex: {{ panelFlex }}; min-width: {{ panelMin }}; max-width: {{ panelMax }}; display: flex; flex-direction: column; gap: 13px;">
+
+      <sc-if value="{{ isStartCard }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 13px;">
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <div style="font-size: 10.5px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--faint);">Pelimuoto</div>
+            <div style="display: flex; flex-direction: column; gap: 7px;">
+              <button onClick="{{ pickStudy }}" style="border: 1.5px solid {{ studyBd }}; background: {{ studyBg }}; text-align: left; padding: 12px 13px; border-radius: 11px; cursor: pointer; display: flex; flex-direction: column; gap: 2px;" style-hover="border-color: #b2b1af;">
+                <span style="font-size: 14px; font-weight: 600;">Harjoittelu</span>
+                <span style="font-size: 14px; line-height: 1.4; color: var(--muted);">Selaa lajit yksi kerrallaan nimineen</span>
+              </button>
+              <button onClick="{{ pickMc }}" style="border: 1.5px solid {{ mcBd }}; background: {{ mcBg }}; text-align: left; padding: 12px 13px; border-radius: 11px; cursor: pointer; display: flex; flex-direction: column; gap: 2px;" style-hover="border-color: #b2b1af;">
+                <span style="font-size: 14px; font-weight: 600;">Tunnista laji</span>
+                <span style="font-size: 14px; line-height: 1.4; color: var(--muted);">Valitse oikea nimi neljästä</span>
+              </button>
+              <sc-if value="{{ showTypeMode }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ pickType }}" style="border: 1.5px solid {{ typeBd }}; background: {{ typeBg }}; text-align: left; padding: 12px 13px; border-radius: 11px; cursor: pointer; display: flex; flex-direction: column; gap: 2px;" style-hover="border-color: #b2b1af;">
+                  <span style="font-size: 14px; font-weight: 600;">Kirjoita nimi</span>
+                  <span style="font-size: 14px; line-height: 1.4; color: var(--muted);">Kirjoita lajin nimi ilman vaihtoehtoja</span>
+                </button>
+              </sc-if>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <div style="font-size: 10.5px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--faint);">Lajiryhmä</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <sc-for list="{{ scopes }}" as="sc" hint-placeholder-count="5">
+                <button onClick="{{ sc.click }}" style="border: 1.5px solid {{ sc.bd }}; background: {{ sc.bg }}; color: {{ sc.fg }}; padding: 6px 12px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">{{ sc.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <sc-if value="{{ hideLength }}" hint-placeholder-val="{{ false }}">
+            <div style="height: 54px;"></div>
+          </sc-if>
+          <sc-if value="{{ showLength }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 7px;">
+              <div style="font-size: 10.5px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--faint);">Kierroksen pituus</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <button onClick="{{ pickShort }}" style="border: 1.5px solid {{ lenShortBd }}; background: {{ lenShortBg }}; color: {{ lenShortFg }}; padding: 6px 12px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">{{ lenShortLabel }}</button>
+                <button onClick="{{ pickAll }}" style="border: 1.5px solid {{ lenAllBd }}; background: {{ lenAllBg }}; color: {{ lenAllFg }}; padding: 6px 12px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">{{ lenAllLabel }}</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <button onClick="{{ start }}" style="border: none; background: var(--btn-bg); color: var(--btn-fg); padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="filter: brightness(1.06);">{{ startLabel }}</button>
+          <div style="font-size: 13px; color: var(--faint);">{{ scopeInfo }}</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isStudy }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 16px;">
+          <div style="background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow);">
+            <div style="font-size: 11px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--faint);">{{ studyCounter }}</div>
+            <div style="display: flex; gap: 8px;">
+              <button onClick="{{ prev }}" style="flex: 1 1 0; border: 1.5px solid var(--pill-bd); background: transparent; color: var(--ink-2); padding: 13px 16px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="border-color: #b2b1af;">Edellinen</button>
+              <button onClick="{{ next }}" style="flex: 1 1 0; border: none; background: var(--btn-bg); color: var(--btn-fg); padding: 13px 16px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="background: var(--ink-2);">Seuraava</button>
+            </div>
+          </div>
+          <div style="flex: 1 1 auto; min-height: 120px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-size: 11px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--faint);">Ryhmän lajit</div>
+            <div style="position: relative; flex: 1 1 auto; min-height: 0;">
+              <div style="position: absolute; inset: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px; overflow-y: auto; padding: 0 2px 14px 0;">
+                <sc-for list="{{ studyList }}" as="s" hint-placeholder-count="12">
+                  <button onClick="{{ s.click }}" style="border: 1px solid {{ s.bd }}; background: {{ s.bg }}; color: {{ s.fg }}; padding: 6px 11px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;">{{ s.label }}</button>
+                </sc-for>
+              </div>
+              <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 26px; pointer-events: none; background: var(--fade);"></div>
+              <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--hair);"></div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+        <div style="background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--shadow);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2);">
+            <span>{{ prompt }}</span>
+            <span style="white-space: nowrap;">{{ progressLabel }}</span>
+          </div>
+
+          <sc-if value="{{ isMc }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <sc-for list="{{ options }}" as="op" hint-placeholder-count="4">
+                <button onClick="{{ op.click }}" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 50px; box-sizing: border-box; border: 1.5px solid {{ op.bd }}; background: {{ op.bg }}; color: {{ op.fg }}; padding: 0 16px; border-radius: 11px; font-size: 14px; font-weight: 600; line-height: 1.2; text-align: left; outline: none; cursor: {{ op.cursor }};">
+                  <span>{{ op.label }}</span>
+                  <sc-if value="{{ op.hasTag }}" hint-placeholder-val="{{ false }}">
+                    <span style="flex: 0 0 auto; height: 22px; display: flex; align-items: center; box-sizing: border-box; font-size: 11px; font-weight: 700; color: {{ op.tagFg }}; background: {{ op.tagBg }}; border: 1px solid {{ op.tagBd }}; padding: 0 8px; border-radius: 999px; text-transform: none; letter-spacing: 0;">{{ op.tag }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isType }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 8px;">
+              <input id="lintuvisa-answer" value="{{ input }}" onChange="{{ onInput }}" onKeyDown="{{ onKey }}" placeholder="Lajin nimi" disabled="{{ answered }}" style="flex: 1 1 auto; min-width: 0; border: 1.5px solid var(--pill-bd); background: var(--surface-2); border-radius: 11px; padding: 13px 15px; font-size: 14px; font-weight: 600; color: var(--ink); outline: none;" style-focus="border-color: var(--ink);">
+              <button onClick="{{ submit }}" disabled="{{ answered }}" style="border: 1.5px solid {{ submitBd }}; background: {{ submitBg }}; color: {{ submitFg }}; padding: 13px 18px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: {{ submitCursor }};">Vastaa</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showHint }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size: 14px; color: var(--faint); line-height: 1.5;">{{ hint }}</div>
+          </sc-if>
+
+          <sc-if value="{{ isTypeVerdict }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 12px; animation: lvIn .22s ease-out;">
+              <div style="height: 1px; background: var(--hair);"></div>
+              <div style="display: flex; flex-direction: column; gap: 3px;">
+                <span style="font-size: 14px; font-weight: 700; color: {{ verdictColor }};">{{ verdict }}</span>
+                <sc-if value="{{ isTypeWrong }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size: 14px; font-weight: 600; color: var(--ink-2);">Oikea vastaus: {{ target }}</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hasFact }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 10px; background: var(--surface-2); border: 1px solid var(--surface-bd); border-radius: 11px; padding: 12px 14px; animation: lvFade .14s linear;">
+              <span style="font-size: 15px; line-height: 1; color: var(--fact);">✦</span>
+              <span style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-size: 13px; font-style: italic; letter-spacing: normal; word-spacing: normal; color: var(--muted);">{{ clueSci }}</span>
+                <span style="font-size: 14px; line-height: 1.55; color: var(--ink-3); text-wrap: pretty;">{{ fact }}</span>
+              </span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 4px;">
+          <div style="position: relative; background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 8px; padding: 28px 22px 22px; display: flex; flex-direction: column; gap: 22px; align-items: center; text-align: center;">
+            <button onClick="{{ share }}" title="{{ shareLabel }}" style="position: absolute; right: 12px; top: 12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--chip-bd); background: var(--chip-bg); color: var(--chip-fg); border-radius: 8px; cursor: pointer;" style-hover="border-color: var(--ink-3); color: var(--ink);">
+              <span style="font-family: 'Material Symbols Rounded'; font-size: 20px; line-height: 1;">{{ shareIcon }}</span>
+            </button>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+              <span style="font-size: 46px; line-height: 1;">{{ rankEmoji }}</span>
+              <span style="font-size: 26px; font-weight: 600; letter-spacing: -0.02em;">{{ rankTitle }}</span>
+              <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint);">Kierros valmis</span>
+            </div>
+            <div style="width: 100%; display: flex; align-items: stretch; justify-content: center;">
+              <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 4px; padding: 12px 8px;">
+                <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;">{{ resultScoreNum }}</span>
+                <span style="font-size: 11.5px; color: var(--faint);">pistettä</span>
+              </div>
+              <span style="width: 1px; margin: 12px 0; background: var(--hair);"></span>
+              <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 4px; padding: 12px 8px;">
+                <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;">{{ statHitsValue }}</span>
+                <span style="font-size: 11.5px; color: var(--faint);">oikein</span>
+              </div>
+              <span style="width: 1px; margin: 12px 0; background: var(--hair);"></span>
+              <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 4px; padding: 12px 8px;">
+                <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;">{{ statStreakValue }}</span>
+                <span style="font-size: 11.5px; color: var(--faint);">pisin putki</span>
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ hasMissed }}" hint-placeholder-val="{{ false }}">
+            <div style="background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; gap: 11px;">
+              <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);">Kertaa vielä nämä</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+                <sc-for list="{{ missed }}" as="m" hint-placeholder-count="3">
+                  <button onClick="{{ m.click }}" style="border: 1px solid {{ m.bd }}; background: {{ m.bg }}; color: {{ m.fg }}; padding: 6px 11px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="border-color: var(--bad);">{{ m.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ btnsInline }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button onClick="{{ start }}" style="border: none; background: var(--btn-bg); color: var(--btn-fg); padding: 14px 22px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="filter: brightness(1.06);">Uusi kierros</button>
+            <button onClick="{{ quit }}" style="border: 1.5px solid var(--pill-bd); background: transparent; color: var(--ink-3); padding: 14px 22px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="border-color: #b2b1af;">Takaisin etusivulle</button>
+          </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <sc-if value="{{ btnsBottom }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <button onClick="{{ start }}" style="flex: 1 1 auto; border: none; background: var(--btn-bg); color: var(--btn-fg); padding: 14px 22px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: pointer;">Uusi kierros</button>
+      <button onClick="{{ quit }}" style="flex: 1 1 auto; border: 1.5px solid var(--pill-bd); background: transparent; color: var(--ink-3); padding: 14px 22px; border-radius: 11px; font-size: 14px; font-weight: 600; cursor: pointer;">Takaisin etusivulle</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--bar-bg); backdrop-filter: blur(8px); border-top: 1px solid var(--hair); box-shadow: 0 -6px 20px rgba(30,30,30,.09);">
+      <div style="height: 4px; background: var(--card-bd);">
+        <div style="height: 100%; width: {{ progressPct }}; background: var(--btn-bg);"></div>
+      </div>
+      <div style="height: 66px; padding: {{ barPad }}; display: flex; align-items: center; justify-content: flex-end; gap: 16px;">
+        <sc-if value="{{ showBarExtras }}" hint-placeholder-val="{{ true }}">
+          <span style="margin-right: auto; font-size: 14px; color: var(--muted);">{{ scopeBarLabel }}</span>
+        </sc-if>
+        <sc-if value="{{ barSpacer }}" hint-placeholder-val="{{ false }}">
+          <span style="margin-right: auto;"></span>
+        </sc-if>
+        <sc-if value="{{ showBarExtras }}" hint-placeholder-val="{{ true }}">
+        <div data-popover="scoremenu" style="position: relative; display: flex; align-items: center;">
+          <button onClick="{{ toggleScoreMenu }}" title="Pisteiden näkyvyys" style="border: none; background: transparent; color: var(--dim); font-family: 'Material Symbols Rounded'; font-size: 22px; line-height: 1; font-variation-settings: 'FILL' 0, 'wght' 400; padding: 4px; border-radius: 8px; cursor: pointer;" style-hover="color: var(--ink-3); background: #ebebea;">more_vert</button>
+          <sc-if value="{{ scoreMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; left: 0; bottom: 40px; z-index: 40; width: 232px; background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 12px; padding: 6px; box-shadow: 0 10px 28px rgba(30,30,30,.16); display: flex; flex-direction: column; gap: 2px; animation: lvIn .18s ease-out;">
+              <button onClick="{{ pickShowScore }}" style="border: none; background: {{ showScoreBg }}; text-align: left; padding: 10px 12px; border-radius: 9px; cursor: pointer; display: flex; gap: 9px; align-items: center; font-size: 14px; font-weight: 400; color: var(--ink);" style-hover="background: var(--surface);">
+                <span style="width: 14px; flex: 0 0 14px; font-size: 13px;">{{ showScoreCheck }}</span>
+                <span>Näytä pisteet</span>
+              </button>
+              <button onClick="{{ pickHideScore }}" style="border: none; background: {{ hideScoreBg }}; text-align: left; padding: 10px 12px; border-radius: 9px; cursor: pointer; display: flex; gap: 9px; align-items: center; font-size: 14px; font-weight: 400; color: var(--ink);" style-hover="background: var(--surface);">
+                <span style="width: 14px; flex: 0 0 14px; font-size: 13px;">{{ hideScoreCheck }}</span>
+                <span>Piilota pisteet</span>
+              </button>
+
+            </div>
+          </sc-if>
+        </div>
+        </sc-if>
+        <sc-if value="{{ showStreakChip }}" hint-placeholder-val="{{ false }}">
+          <span style="position: relative; height: 34px; display: flex; align-items: center; gap: 6px; padding: 0 13px 0 11px; background: var(--surface-2); border: 1px solid var(--surface-bd); border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--ink-3); white-space: nowrap; animation: lvPop .45s cubic-bezier(.2,1.5,.4,1);">
+            <span style="font-size: 14px;">🔥</span>
+            <span>{{ streakLabel }}</span>
+            <sc-if value="{{ showBurst }}" hint-placeholder-val="{{ false }}">
+              <span style="position: absolute; left: 14px; bottom: 26px; pointer-events: none; font-size: 15px; animation: lvFeather 2.2s ease-out forwards;">🔥</span>
+            </sc-if>
+          </span>
+        </sc-if>
+        <sc-if value="{{ scoreVisible }}" hint-placeholder-val="{{ true }}">
+        <div data-popover="rules" style="position: relative; margin-left: -10px; height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 6px 0 13px; background: var(--chip-bg); border: 1px solid var(--chip-bd); border-radius: 999px;">
+          <span style="font-size: 13px; font-weight: 600; color: var(--chip-fg);">Pisteet</span>
+          <span style="display: inline-block; font-size: 14px; font-weight: 700; line-height: 1; transform-origin: center; transform: {{ scoreTf }}; color: {{ scoreCol }}; transition: transform .3s cubic-bezier(.2,1.5,.4,1), color .35s ease;">{{ score }}</span>
+          <button onClick="{{ toggleRules }}" title="Pisteytys" style="border: none; background: transparent; padding: 2px; border-radius: 999px; cursor: pointer; display: flex; align-items: center; color: var(--chip-ico); font-family: 'Material Symbols Rounded'; font-size: 19px; line-height: 1; font-variation-settings: 'FILL' 0, 'wght' 300;" style-hover="color: var(--ink-3);">info</button>
+          <sc-if value="{{ showPts }}" hint-placeholder-val="{{ false }}">
+            <span style="position: absolute; right: 34px; bottom: 30px; pointer-events: none; font-size: 17px; font-weight: 700; color: var(--ok); white-space: nowrap; animation: lvPts 1.4s ease-out forwards;">{{ ptsLabel }}</span>
+          </sc-if>
+          <sc-if value="{{ rulesOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position: fixed; right: {{ rulesRight }}; left: {{ rulesLeft }}; bottom: 82px; z-index: 40; width: {{ rulesWidth }}; max-width: calc(100vw - 24px); background: var(--card); border: 1px solid var(--card-bd); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 12px; padding: 14px 16px; box-shadow: 0 10px 28px rgba(30,30,30,.16); display: flex; flex-direction: column; gap: 10px; animation: lvIn .18s ease-out;">
+              <div style="font-size: 11px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--faint);">Näin pisteet kertyvät</div>
+              <div style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-3);">
+                <span>🎯</span>
+                <span><strong style="color: var(--ink);">Oikea laji:</strong> 10 p</span>
+              </div>
+              <div style="height: 1px; background: var(--hair);"></div>
+              <div style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-3);">
+                <span>🔥</span>
+                <span><strong style="color: var(--ink);">Peräkkäiset osumat:</strong> nostavat kerrointa (max 3x)</span>
+              </div>
+              <div style="height: 1px; background: var(--hair);"></div>
+              <div style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink-3);">
+                <span>❌</span>
+                <span><strong style="color: var(--ink);">Huti:</strong> nollaa kertoimen</span>
+              </div>
+              <div style="height: 1px; background: var(--hair);"></div>
+              <div style="font-size: 14px; line-height: 1.5; color: var(--faint);">Putkessa nyt {{ streak }} · ennätys kaikilta kierroksilta {{ best }}</div>
+            </div>
+          </sc-if>
+        </div>
+        </sc-if>
+        <button onClick="{{ next }}" title="Enter" disabled="{{ nextOff }}" style="height: 46px; border: 1.5px solid {{ nextBd }}; background: {{ nextBg }}; color: {{ nextFg }}; padding: 0 24px; border-radius: 11px; font-size: 15px; font-weight: 600; cursor: {{ nextCursor }}; white-space: nowrap;">{{ nextLabel }}</button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;startLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Täyskuva tumma&quot;,&quot;Täyskuva vaalea&quot;,&quot;Kortti&quot;],&quot;default&quot;:&quot;Täyskuva tumma&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Etusivu&quot;},&quot;questionsPerRound&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:10,&quot;min&quot;:5,&quot;max&quot;:30,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Peli&quot;},&quot;showSoundHint&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Peli&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2f4a78&quot;,&quot;options&quot;:[&quot;#2f4a78&quot;,&quot;#2f6b4f&quot;,&quot;#8a5a2b&quot;,&quot;#4a4a55&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Peli&quot;}}">
+const C = { ink: 'var(--btn-bg)', ok: 'var(--ok)', bad: 'var(--bad)' };
+function norm(s) { return (s || '').toLowerCase().replace(/[\s'’\-]/g, '').replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/å/g, 'a'); }
+function lev(a, b) {
+  const m = a.length, n = b.length; let prev = Array.from({ length: n + 1 }, (_, i) => i);
+  for (let i = 1; i <= m; i++) { const cur = [i]; for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; }
+  return prev[n];
+}
+function shuffle(a) { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = r[i]; r[i] = r[j]; r[j] = t; } return r; }
+
+class Component extends DCLogic {
+  state = { vw: typeof window !== 'undefined' ? window.innerWidth : 1200, ready: false, screen: 'start', mode: 'mc', scope: 'Kaikki', queue: [], idx: 0, score: 0, streak: 0, correct: 0, missed: [], answered: null, input: '', best: 0, roundAll: false, theme: 'dark' };
+
+  componentDidMount() {
+    this.imgs = {};
+    this.sounds = {};
+    try { this.sounds = JSON.parse(localStorage.getItem('lintuvisa-au-v3') || '{}') || {}; } catch (e) { this.sounds = {}; }
+    this.ready = {};
+    this._imgWait = {};
+    this._varWait = {}; this._varDone = {}; this._rand = {};
+    try { this.imgs = JSON.parse(localStorage.getItem('lintuvisa-img-v18') || '{}') || {}; } catch (e) { this.imgs = {}; }
+    let th = 'dark';
+    try { th = localStorage.getItem('lintuvisa-theme') || 'dark'; } catch (e) { }
+    this.applyTheme(th);
+    this.applyHero();
+    this.setState({ theme: th });
+    this.tick();
+    try { const b = parseInt(localStorage.getItem('lintuvisa-best') || '0', 10); if (b) this.setState({ best: b }); } catch (e) { }
+    this._onKeyWin = ev => {
+      if (ev.key !== 'Enter') return;
+      const st = this.state;
+      if (ev.target && ev.target.id === 'lintuvisa-answer') return;
+      if (st.screen === 'play' && st.answered) {
+        if (Date.now() - (this._answeredAt || 0) < 350) return;
+        ev.preventDefault(); this.next(); return;
+      }
+      if (st.screen === 'study') { ev.preventDefault(); this.next(); }
+    };
+    window.addEventListener('keydown', this._onKeyWin);
+    this._onResize = () => {
+      const bw = Math.round((document.body && document.body.getBoundingClientRect().width) || 0);
+      const w = Math.max(bw, window.innerWidth || 0) || bw || 1200;
+      const next = { vw: w, vh: window.innerHeight };
+      if (w < 760 && this.state.mode === 'type') next.mode = 'mc';
+      this.setState(next);
+    };
+    this._onResize();
+    window.addEventListener('resize', this._onResize);
+    requestAnimationFrame(this._onResize);
+    setTimeout(this._onResize, 60);
+    setTimeout(this._onResize, 300);
+    setTimeout(this._onResize, 1000);
+    if (typeof ResizeObserver !== 'undefined' && document.body) {
+      this._bodyRo = new ResizeObserver(() => {
+        const w = Math.max(Math.round(document.body.getBoundingClientRect().width) || 0, window.innerWidth || 0);
+        if (Math.abs((this.state.vw || 0) - w) > 2) this.setState({ vw: w, vh: window.innerHeight, mode: w < 760 && this.state.mode === 'type' ? 'mc' : this.state.mode });
+      });
+      this._bodyRo.observe(document.body);
+    }
+    this._onDocDown = ev => {
+      if (!this.state.rules && !this.state.scoreMenu && !this.state.themeMenu) return;
+      const t = ev.target;
+      if (!(t && t.closest && t.closest('[data-popover]'))) this.setState({ rules: false, scoreMenu: false, themeMenu: false });
+    };
+    document.addEventListener('mousedown', this._onDocDown, true);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    if (this._bodyRo) this._bodyRo.disconnect();
+    window.removeEventListener('keydown', this._onKeyWin);
+    document.removeEventListener('mousedown', this._onDocDown, true);
+    if (this._au) { this._au.pause(); this._au = null; }
+    clearTimeout(this.timer); clearTimeout(this._popT); clearTimeout(this._burstT);
+    cancelAnimationFrame(this._scoreRaf);
+  }
+  tick() {
+    if (window.BIRDS) {
+      this.birds = window.BIRDS;
+      this.by = {};
+      this.groups = [];
+      this.birds.forEach(b => { this.by[b.n] = b; if (this.groups.indexOf(b.g) < 0) this.groups.push(b.g); });
+      this.setState({ ready: true });
+    } else this.timer = setTimeout(() => this.tick(), 60);
+  }
+
+  preload(url) {
+    if (!this.ready) this.ready = {};
+    if (!url || this.ready[url] !== undefined) return;
+    this.ready[url] = 'wait';
+    const im = new Image();
+    im.onload = () => { this.ready[url] = true; this.setState({ imgTick: (this.state.imgTick || 0) + 1 }); };
+    im.onerror = () => { this.ready[url] = 'fail'; this.setState({ imgTick: (this.state.imgTick || 0) + 1 }); };
+    im.src = url;
+  }
+  list(name) {
+    const l = this.imgs ? this.imgs[name] : undefined;
+    if (Array.isArray(l)) return l;
+    if (l === null) return [];
+    if (typeof l === 'string') return [l];
+    return undefined;
+  }
+  variantIdx(name) {
+    const st = this.state;
+    const l = this.list(name) || [];
+    if (l.length < 2) return 0;
+    if (st.screen === 'study') return ((st.vsel || {})[name] || 0) % l.length;
+    const r = (this._rand || {})[st.idx];
+    return typeof r === 'number' ? Math.floor(r * l.length) % l.length : 0;
+  }
+  curUrl(name) {
+    const l = this.list(name);
+    if (!l || !l.length) return null;
+    return l[this.variantIdx(name)];
+  }
+  stepVariant = d => () => {
+    const st = this.state;
+    const name = st.queue[st.idx];
+    const l = this.list(name) || [];
+    if (!name || l.length < 2) return;
+    const cur = (st.vsel || {})[name] || 0;
+    const next = (cur + d + l.length) % l.length;
+    this.setState({ vsel: Object.assign({}, st.vsel, { [name]: next }) });
+  };
+  slotFor(name, reveal, small) {
+    if (!name) return null;
+    if (!this.ready) this.ready = {};
+    const l = this.list(name);
+    const vi = small ? 0 : this.variantIdx(name);
+    const url = !l || !l.length ? null : l[vi];
+    if (url) this.preload(url);
+    const src = url && this.ready[url] === true ? url : null;
+    if (!src) return null;
+    return React.createElement('image-slot', {
+      key: 'bird-' + name + '-' + vi + (small ? '-s' : ''),
+      id: 'bird-' + name + (small ? '' : '-v' + vi),
+      shape: 'rect',
+      fit: small || (typeof window !== 'undefined' && window.innerWidth < 760) ? 'cover' : 'contain',
+      src: src,
+      credit: small ? undefined : 'Kuva: Wikimedia Commons',
+      style: { pointerEvents: 'none', background: 'transparent' },
+      placeholder: ''
+    });
+  }
+  saveImgs() { try { localStorage.setItem('lintuvisa-img-v18', JSON.stringify(this.imgs)); } catch (e) { } }
+  componentDidUpdate() { this.loadImgs(); this.applyHero(); }
+  loadImgs() {
+    const st = this.state;
+    if (st.screen !== 'play' && st.screen !== 'study') return;
+    (st.queue || []).slice(0, 24).forEach(n => { if (Array.isArray(this.imgs[n])) this.loadVariants(n); });
+    const want = (st.queue || []).filter(n => n && this.imgs[n] === undefined && !this._imgWait[n]);
+    if (!want.length) return;
+    const batch = want.slice(0, 20);
+    batch.forEach(n => { this._imgWait[n] = true; });
+    const url = 'https://fi.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=name&redirects=1&titles=' + encodeURIComponent(batch.join('|'));
+    fetch(url)
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        const q = (j && j.query) || {};
+        const byTitle = {};
+        Object.keys(q.pages || {}).forEach(k => { const p = q.pages[k]; byTitle[p.title] = p.pageimage || null; });
+        const alias = {};
+        (q.redirects || []).forEach(r => { alias[r.from] = r.to; });
+        (q.normalized || []).forEach(r => { alias[r.from] = r.to; });
+        batch.forEach(n => {
+          const title = alias[n] || n;
+          const file = byTitle[title] !== undefined ? byTitle[title] : byTitle[n];
+          this.imgs[n] = file ? ['https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(file) + '?width=900'] : [];
+          this._imgWait[n] = false;
+          this.loadVariants(n);
+        });
+        this.saveImgs();
+        this.setState({ imgTick: (this.state.imgTick || 0) + 1 });
+      })
+      .catch(() => { batch.forEach(n => { this.imgs[n] = []; this._imgWait[n] = false; }); this.setState({ imgTick: (this.state.imgTick || 0) + 1 }); });
+  }
+  loadVariants(n) {
+    if (!this._varWait) { this._varWait = {}; this._varDone = {}; }
+    const have = this.list(n);
+    if (this._varWait[n] || this._varDone[n] || !have || have.length >= 3) return;
+    const bird = this.by && this.by[n];
+    const sci = ((bird && bird.sci) || '').split(' ').slice(0, 2).join(' ');
+    if (!sci) return;
+    this._varWait[n] = true;
+    const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=categorymembers&gcmtitle=' + encodeURIComponent('Category:' + sci) + '&gcmtype=file&gcmlimit=40&prop=imageinfo&iiprop=url|size&iiurlwidth=900';
+    const block = ['dendrocopos_major_03', 'bubo_bubo_juveniles', 'wood_chips', '20180627erithacus_rubecula', 'korhoen_-_black_grouse_-_lyrurus_tetrix_2', 'carbonero_común_(parus_major)', 'mergus_serrator_dsc_5968', 'mergus_serrator_dsc_5980', '2020-06-14_-_falco_tinnunculus_fmt_kiel_(1)', 'accipiter_nisus_male_with_his_prey', 'corvus_cornix_(18655536721)', '20190710_corvus_corone_01',
+      'buteo_buteo102', 'buteo_buteo105', 'berguv_(50890793267)', 'poecile_montanus_992',
+      'emberiza_citrinella_(19246056423)', 'bresničićka', 'song_thrush1', 'song_thrush2',
+      'explored_2021-12-26', 'ojiro_washi', '20160225_-_fulica_atra_1', 'brezov_zviždak',
+      'fmt_kiel', 'accipiter_nisus_in_minsk', 'am_dach', 'dead_mareca_penelope',
+      'montreal,_quebec_2026-05-10_(02)', 'european_golden_plover_(pluvialis_apricaria)_2021', 'foel_fras_(52973860519)', 'lewis,_outer_hebrides_2', 'common_crane_(grus_grus).jpg', '50625657997', '17014089738', '51685511060', 'mali_drozd', 'lisine_(2)', 'lisine_(3)', 'gelinotte', 'орябка', 'code.birb', 'delichon_urbicum_oulu', '54615799522', '(mauersegler)_2024-07-16', 'jerzyk', '29033593572', 'juist_2010', 'chloris_9402_04'];
+    const bad = /(map|mapa|karte|kaart|carte|kart|distribut|range|areal|verbreitung|egg|nest|skull|skele|bones|bill|beak|foot|feet|claw|wing detail|feather|pellet|dropping|stamp|coin|banknote|specimen|mount|taxidermy|museum|drawing|draw|illustr|litho|engrav|painting|plate|sketch|art|logo|sign|diagram|chart|graph|sonogram|spectrogram|silhouet|track|footprint|book|cover|poster|flag|wappen|coat of arms|heraldi|close.?up|closeup|portrait|head|detail|juvenil|pullus|pulli|chick|nestling|fledgl|downy|hatchl|in hand|hand held|ringing|banding|caught|rescat|rescue|net|cage|captive|wood chip|chips|sawdust|trunk|bark|cavity|hole|burrow|habitat|biotop|excavat|damage|signs of|feeding sign|anvil|forge)/i;
+    fetch(u)
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        const pages = (j && j.query && j.query.pages) || {};
+        const parts = sci.toLowerCase().split(' ');
+        const genus = parts[0] || '', epi = parts[1] || '';
+        const blocked = t => { const l = decodeURIComponent(String(t || '')).toLowerCase().replace(/ /g, '_'); return block.some(b => l.indexOf(b) >= 0); };
+        const named = t => { const l = (t || '').toLowerCase(); return (genus && l.indexOf(genus) >= 0) || (epi && epi.length > 3 && l.indexOf(epi) >= 0) || l.indexOf(n.toLowerCase()) >= 0; };
+        const cand = Object.keys(pages).map(k => pages[k])
+          .filter(p => {
+            const ii = (p.imageinfo && p.imageinfo[0]) || {};
+            const w = ii.width || 0, h = ii.height || 0;
+            const ar = w && h ? w / h : 1.3;
+            return /\.jpe?g$/i.test(p.title || '') && !bad.test(p.title || '') && named(p.title) && w >= 1200 && ar >= 0.6 && ar <= 2.4;
+          })
+          .sort((a, b) => {
+            const A = (a.imageinfo && a.imageinfo[0]) || {}, B = (b.imageinfo && b.imageinfo[0]) || {};
+            return ((B.width || 0) * (B.height || 0)) - ((A.width || 0) * (A.height || 0));
+          })
+          .map(p => (p.imageinfo && p.imageinfo[0] && (p.imageinfo[0].thumburl || p.imageinfo[0].url)) || null)
+          .filter(Boolean);
+        const key = x => decodeURIComponent(String(x).split('/').pop().split('?')[0]).toLowerCase();
+        const out = (this.list(n) || []).slice();
+        cand.forEach(c => { if (out.length < 3 && !out.some(h => key(h) === key(c))) out.push(c); });
+        this.imgs[n] = out.filter(u => !blocked(u));
+        this._varWait[n] = false; this._varDone[n] = true;
+        this.saveImgs();
+        this.setState({ imgTick: (this.state.imgTick || 0) + 1 });
+      })
+      .catch(() => { this._varWait[n] = false; this._varDone[n] = true; });
+  }
+  toggleAudio = () => {
+    const st = this.state;
+    const name = st.queue[st.idx];
+    if (!name) return;
+    if (this._au && this._auName === name && !this._au.paused) { this._au.pause(); this.setState({ auState: 'paused' }); return; }
+    if (this._au && this._auName === name) { this._au.play(); this.setState({ auState: 'playing' }); return; }
+    if (this._au) { this._au.pause(); this._au = null; }
+    const cached = this.sounds[name];
+    if (cached === null) { this.setState({ auState: 'none', auName: name }); return; }
+    if (cached) { this.playUrl(name, cached); return; }
+    this.setState({ auState: 'loading', auName: name, auTime: 0, auDur: 0 });
+    const bird = this.by[name];
+    const scis = [(bird && bird.sci) || '', (bird && bird.sci2) || ''].filter(Boolean);
+    this.searchSound(name, scis, 0);
+  };
+  searchSound(name, scis, i) {
+    if (i >= scis.length) {
+      this.sounds[name] = null;
+      try { localStorage.setItem('lintuvisa-au-v3', JSON.stringify(this.sounds)); } catch (e) { }
+      this.setState({ auState: 'none' });
+      return;
+    }
+    const url = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&list=search&srnamespace=6&srlimit=20&srsearch=' + encodeURIComponent('filetype:audio ' + scis[i]);
+    fetch(url)
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        const hits = ((j && j.query && j.query.search) || []).map(s => s.title.replace(/^File:/, ''));
+        const pick = this.pickSound(hits, scis[i]);
+        if (!pick) { this.searchSound(name, scis, i + 1); return; }
+        this.sounds[name] = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(pick);
+        try { localStorage.setItem('lintuvisa-au-v3', JSON.stringify(this.sounds)); } catch (e) { }
+        if (this.state.auName === name) this.playUrl(name, this.sounds[name]);
+        else this.setState({ auState: 'idle' });
+      })
+      .catch(() => { this.sounds[name] = null; this.setState({ auState: 'none' }); });
+  }
+  pickSound(hits, sci) {
+    const audio = hits.filter(t => /\.(mp3|ogg|oga|wav|flac)$/i.test(t));
+    const bad = t => /^de-|^ll-q|pronunciation|spoken|voice of|nl-|fr-|es-/i.test(t);
+    const bin = sci.split(' ').slice(0, 2).join(' ').toLowerCase();
+    const genus = bin.split(' ')[0];
+    const clean = audio.filter(t => !bad(t));
+    const sameSpecies = clean.filter(t => bin && t.toLowerCase().indexOf(bin) >= 0);
+    const xc = sameSpecies.filter(t => /xc\d+/i.test(t));
+    if (xc.length) return xc[0];
+    if (sameSpecies.length) return sameSpecies[0];
+    const epithet = bin.split(' ')[1];
+    if (genus && epithet) {
+      const loose = clean.filter(t => { const l = t.toLowerCase(); return l.indexOf(epithet) >= 0 && l.indexOf(genus.slice(0, 4)) >= 0; });
+      if (loose.length) return loose[0];
+    }
+    return null;
+  }
+  shareText() {
+    const st = this.state;
+    const r = this.rank(st);
+    const scope = st.scope === 'Kaikki' ? 'Kaikki lajiryhmät' : st.scope;
+    const grid = (st.queue || []).map(n => (st.missed.indexOf(n) >= 0 ? '🟥' : '🟩')).join('');
+    return 'Tirppatunnistin · ' + scope + '\n' + grid + '\n' + st.correct + '/' + st.queue.length + ' oikein · ' + st.score + ' pistettä\n' + r.emoji + ' ' + r.title;
+  }
+  share = async () => {
+    const text = this.shareText();
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Tirppatunnistin', text: text });
+        this.flashShare('Jaettu!');
+        return;
+      }
+    } catch (e) {
+      if (e && e.name === 'AbortError') return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      this.flashShare('Kopioitu!');
+    } catch (e) {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        this.flashShare('Kopioitu!');
+      } catch (err) { this.flashShare('Jakaminen ei onnistunut'); }
+    }
+  };
+  flashShare(msg) {
+    clearTimeout(this._shareT);
+    this.setState({ shareMsg: msg });
+    this._shareT = setTimeout(() => this.setState({ shareMsg: '' }), 2200);
+  }
+  clock(s) {
+    const t = Math.max(0, Math.floor(s || 0));
+    return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
+  }
+  seek = ev => {
+    if (!this._au || !this._au.duration) return;
+    const r = ev.currentTarget.getBoundingClientRect();
+    const f = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
+    this._au.currentTime = f * this._au.duration;
+    this.setState({ auTime: this._au.currentTime });
+  };
+  playUrl(name, url) {
+    const a = new Audio(url);
+    a.ontimeupdate = () => this.setState({ auTime: a.currentTime, auDur: a.duration || 0 });
+    a.onloadedmetadata = () => this.setState({ auDur: a.duration || 0 });
+    a.onended = () => this.setState({ auState: 'idle', auTime: 0 });
+    a.onerror = () => this.setState({ auState: 'none' });
+    this._au = a; this._auName = name;
+    a.currentTime = 0;
+    this.setState({ auState: 'playing', auName: name, auTime: 0, auDur: 0 });
+    a.play().catch(() => this.setState({ auState: 'none' }));
+  }
+  stopAudio() {
+    if (this._au) { this._au.pause(); this._au = null; this._auName = null; }
+    this.setState({ auTime: 0, auDur: 0, auName: null, auState: 'idle' });
+  }
+  names() {
+    if (!this.birds) return [];
+    const s = this.state.scope;
+    return this.birds.filter(b => s === 'Kaikki' || b.g === s).map(b => b.n);
+  }
+  total() { const all = this.names().length; if (this.state.roundAll) return all; return Math.min(this.props.questionsPerRound || 10, all); }
+  accent() { return this.props.accentColor || '#2f4a78'; }
+  toTop() { try { window.scrollTo(0, 0); if (document.scrollingElement) document.scrollingElement.scrollTop = 0; } catch (e) { } }
+
+  start = () => {
+    this.toTop();
+    if (this.state.mode === 'study') {
+      const q = this.names().slice().sort((a, b) => a.localeCompare(b, 'fi'));
+      this.setState({ screen: 'study', queue: q, idx: 0, answered: null });
+      return;
+    }
+    const q = shuffle(this.names()).slice(0, this.total());
+    this._rand = {};
+    q.forEach((n, i) => { this._rand[i] = Math.random(); });
+    this.setState({ screen: 'play', queue: q, idx: 0, score: 0, disp: 0, pop: false, roundBest: 0, streak: 0, correct: 0, missed: [], answered: null, input: '', focus: null });
+    this.focusAnswer();
+  };
+  quit = () => { this.stopAudio(); this.setState({ screen: 'start', answered: null, auState: 'idle', focus: null }); this.toTop(); };
+  prev = () => { this.stopAudio(); const n = this.state.queue.length; if (n) this.setState({ idx: (this.state.idx - 1 + n) % n, auState: 'idle' }); };
+  pick = n => () => { this.stopAudio(); const i = this.state.queue.indexOf(n); if (i >= 0) this.setState({ idx: i, auState: 'idle' }); };
+  setMode = m => () => this.setState({ mode: m });
+  setScope = s => () => this.setState({ scope: s });
+  setRoundAll = v => () => this.setState({ roundAll: v });
+  toggleDetails = () => this.setState({ det: !this.state.det });
+  setDet = v => () => this.setState({ det: v });
+  toggleRules = () => this.setState({ rules: !this.state.rules });
+  toggleScoreMenu = () => this.setState({ scoreMenu: !this.state.scoreMenu });
+  toggleThemeMenu = () => this.setState({ themeMenu: !this.state.themeMenu });
+  setHideScore = v => () => this.setState({ hideScore: v, scoreMenu: false });
+  applyTheme(t) { try { document.body.classList.toggle('lv-light', t === 'light'); } catch (e) { } }
+  applyHero() { try { document.body.classList.toggle('lv-hero', this.state.screen === 'start' && (this.props.startLayout || 'Täyskuva tumma') !== 'Kortti'); } catch (e) { } }
+  setTheme = t => () => { try { localStorage.setItem('lintuvisa-theme', t); } catch (e) { } this.applyTheme(t); this.setState({ theme: t, scoreMenu: false, themeMenu: false }); };
+
+  rank(st) {
+    const p = st.queue.length ? st.correct / st.queue.length : 0;
+    if (p >= 1) return { emoji: '👑', title: 'Lintumestari', note: 'Täydet osumat. Tunnistat lajit tuntomerkeistä yhdellä vilkaisulla.' };
+    if (p >= 0.85) return { emoji: '🦅', title: 'Kokenut bongari', note: 'Melkein virheetön kierros — vain hienosäätöä huipulle.' };
+    if (p >= 0.65) return { emoji: '🔭', title: 'Retkeilijä', note: 'Tunnistat tavallisimmat lajit. Muutama kaipaa vielä kertausta.' };
+    if (p >= 0.4) return { emoji: '🪶', title: 'Aloitteleva bongari', note: 'Suunta on oikea. Yksi kierros lisää ja nimet alkavat tarttua.' };
+    return { emoji: '🥚', title: 'Untuvikko', note: 'Kaikki alkaa jostain — kokeile harjoittelua ja tule takaisin.' };
+  }
+  bumpScore(from, to) {
+    clearTimeout(this._popT);
+    cancelAnimationFrame(this._scoreRaf);
+    this.setState({ disp: from, pop: true });
+    const t0 = Date.now(), dur = 620;
+    const step = () => {
+      const p = Math.min(1, (Date.now() - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      if (p < 1) { this.setState({ disp: from + (to - from) * e }); this._scoreRaf = requestAnimationFrame(step); }
+      else this.setState({ disp: to });
+    };
+    this._scoreRaf = requestAnimationFrame(step);
+    this._popT = setTimeout(() => this.setState({ pop: false }), 700);
+    clearTimeout(this._burstT);
+    this.setState({ burst: true });
+    this._burstT = setTimeout(() => this.setState({ burst: false }), 2400);
+  }
+
+  options() {
+    const t = this.state.queue[this.state.idx];
+    if (!t || this.state.mode !== 'mc') return [];
+    const key = t + '|' + this.state.idx + '|' + this.state.scope;
+    if (this._optKey === key) return this._opts;
+    const same = this.birds.filter(b => b.n !== t && b.g === this.by[t].g).map(b => b.n);
+    const other = this.birds.filter(b => b.n !== t && b.g !== this.by[t].g).map(b => b.n);
+    const picks = shuffle(same).concat(shuffle(other)).slice(0, 3);
+    this._optKey = key;
+    this._opts = shuffle(picks.concat([t]));
+    return this._opts;
+  }
+
+  answer(given) {
+    if (this.state.answered) return;
+    const t = this.state.queue[this.state.idx];
+    let ok;
+    if (this.state.mode === 'type') { const a = norm(given), b = norm(t); ok = a === b || (a.length > 5 && lev(a, b) <= 1); }
+    else ok = given === t;
+    if (!ok && !given) return;
+    this._answeredAt = Date.now();
+    const streak = ok ? this.state.streak + 1 : 0;
+    const pts = ok ? 10 * Math.min(3, streak) : 0;
+    const best = Math.max(this.state.best, streak);
+    const roundBest = Math.max(this.state.roundBest || 0, streak);
+    if (best > this.state.best) { try { localStorage.setItem('lintuvisa-best', String(best)); } catch (e) { } }
+    const prevScore = this.state.score;
+    this.setState({
+      answered: { ok: ok, given: given, pts: pts }, score: prevScore + pts, disp: prevScore, streak: streak, best: best, roundBest: roundBest,
+      correct: this.state.correct + (ok ? 1 : 0), missed: ok ? this.state.missed : this.state.missed.concat([t])
+    });
+    if (pts) this.bumpScore(prevScore, prevScore + pts);
+  }
+  next = () => {
+    this.stopAudio();
+    const i = this.state.idx + 1;
+    if (this.state.screen === 'study') { this.setState({ idx: i % this.state.queue.length }); return; }
+    if (i >= this.state.queue.length) {
+      const total = this.state.score;
+      this.setState({ screen: 'result', answered: null });
+      this.bumpScore(0, total);
+      this.toTop();
+    } else { this.setState({ idx: i, answered: null, input: '' }); this.focusAnswer(); }
+  };
+  focusAnswer() {
+    setTimeout(() => {
+      if (this.state.mode !== 'type' || this.state.screen !== 'play' || this.state.answered) return;
+      const el = document.getElementById('lintuvisa-answer');
+      if (el) { try { el.focus(); } catch (err) { } }
+    }, 60);
+  }
+  onInput = e => this.setState({ input: e.target.value });
+  onKey = e => { if (e.key === 'Enter') this.answer(this.state.input); };
+  submit = () => this.answer(this.state.input);
+
+  renderVals() {
+    const st = this.state;
+    const A = this.accent();
+    const modeBg = m => (st.mode === m ? 'var(--mode-on)' : 'var(--surface)');
+    const modeBd = m => (st.mode === m ? A : 'var(--pill-bd)');
+    const target = st.queue[st.idx] || '';
+    const bird = (this.by && this.by[target]) || null;
+    const ans = st.answered;
+    const isStudy = st.screen === 'study';
+    const reveal = isStudy || !!ans;
+    const nCount = this.names().length;
+    const soundOn = this.props.showSoundHint !== false;
+    const mine = st.auName === target;
+    const playing = mine && st.auState === 'playing';
+    const prog = mine && st.auDur ? Math.min(1, (st.auTime || 0) / st.auDur) : 0;
+    const N = st.vw >= 1500 ? 80 : (st.vw >= 1200 ? 62 : (st.vw >= 900 ? 46 : 34));
+    let seed = 0;
+    for (let i = 0; i < target.length; i++) seed = (seed * 31 + target.charCodeAt(i)) % 9973;
+    const bars = [];
+    for (let i = 0; i < N; i++) {
+      const r = (Math.sin((seed + i * 37) * 0.9) + Math.sin((seed + i * 11) * 2.3)) / 2;
+      const h = 26 + Math.abs(r) * 74;
+      const past = i / N <= prog;
+      bars.push({ h: Math.round(h) + '%', bg: mine && st.auState === 'none' ? 'var(--wave-off)' : (mine && prog > 0 && past ? C.ink : 'var(--wave)') });
+    }
+    const layout = this.props.startLayout || 'Täyskuva tumma';
+    const heroOn = st.screen === 'start' && layout !== 'Kortti';
+    const dark = layout === 'Täyskuva tumma';
+    const pill = (on, dk) => ({
+      bg: on ? (dk ? '#f7f7f6' : '#1f1f1e') : (dk ? 'rgba(255,255,255,.08)' : 'rgba(255,255,255,.55)'),
+      bd: on ? (dk ? '#f7f7f6' : '#1f1f1e') : (dk ? 'rgba(255,255,255,.28)' : 'rgba(30,30,30,.16)'),
+      fg: on ? (dk ? '#1f1f1e' : '#f7f7f6') : (dk ? '#f2efe8' : '#3d3d3b')
+    });
+    const modeDefs = [
+      ['study', 'Harjoittelu', 'Selaa lajeja ja opi ilman paineita!'],
+      ['mc', 'Tunnista vaihtoehdoista', 'Valitse oikea lintu vaihtoehdoista'],
+      ['type', 'Kirjoita nimi', 'Tunnista lintu, ja kirjoita lajin nimi']
+    ].filter(m => m[0] !== 'type' || st.vw >= 760);
+    return {
+      isStart: st.screen === 'start',
+      isStartCard: st.screen === 'start' && !heroOn,
+      isStartHero: heroOn,
+      showPageEyebrow: !heroOn,
+      showHeader: !heroOn,
+      lenVis: st.mode === 'study' ? 'hidden' : 'visible',
+      lenEvents: st.mode === 'study' ? 'none' : 'auto',
+      lenOpacity: st.mode === 'study' ? '0' : '1',
+      showHeroDesc: true,
+      glassMaxH: st.vw < 760 ? 'auto' : 'calc(100vh - 76px)',
+      heroMinH: st.vw < 760 ? '100dvh' : '100vh',
+      heroRadius: heroOn ? '0' : '12px',
+      pageGap: heroOn ? '0' : '14px',
+      heroPad: st.vw < 760 ? '44px 18px 28px' : '34px 38px 38px',
+      heroAlign: 'flex-end',
+      heroImgShow: st.vw < 760 ? 'none' : 'block',
+      heroGap: st.vw < 760 ? '16px' : '26px',
+      glassAlign: st.vw < 760 ? 'stretch' : 'flex-end',
+      glassFlex: st.vw < 760 ? '1 1 auto' : '0 1 350px',
+      heroTitleSize: st.vw < 760 ? '30px' : 'clamp(38px, 4.4vw, 62px)',
+      heroTitleSpan: st.vw < 760 ? '30px' : '55.5104px',
+      heroScrim: dark
+        ? (st.vw < 760
+          ? 'linear-gradient(to top, rgba(10,12,16,.96) 0%, rgba(10,12,16,.82) 40%, rgba(10,12,16,.5) 75%, rgba(10,12,16,.34) 100%)'
+          : 'linear-gradient(to top, rgba(12,14,18,.92) 0%, rgba(12,14,18,.55) 42%, rgba(12,14,18,.15) 100%)')
+        : 'linear-gradient(to top, rgba(246,244,239,.95) 0%, rgba(246,244,239,.62) 45%, rgba(246,244,239,.12) 100%)',
+      heroFg: dark ? '#ffffff' : '#1f1f1e',
+      heroSubFg: dark ? 'rgba(255,255,255,.82)' : '#3d3d3b',
+      heroEyebrowFg: dark ? 'rgba(255,255,255,.7)' : '#6a6a68',
+      heroCreditFg: dark ? 'rgba(255,255,255,.55)' : '#6a6a68',
+      glassBg: dark ? 'rgba(18,20,24,.62)' : 'rgba(255,255,255,.72)',
+      glassBd: dark ? 'rgba(255,255,255,.16)' : 'rgba(30,30,30,.1)',
+      heroLabelFg: dark ? 'rgba(255,255,255,.6)' : '#6a6a68',
+      heroCtaBg: dark ? '#f7f7f6' : '#1f1f1e',
+      heroCtaFg: dark ? '#1f1f1e' : '#f7f7f6',
+      heroModes: modeDefs.map(m => {
+        const on = st.mode === m[0];
+        const p = pill(on, dark);
+        return {
+          label: m[1], desc: m[2], click: this.setMode(m[0]),
+          bg: on ? (dark ? 'rgba(255,255,255,.14)' : '#ffffff') : (dark ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.5)'),
+          bd: on ? (dark ? 'rgba(255,255,255,.7)' : '#1f1f1e') : (dark ? 'rgba(255,255,255,.16)' : 'rgba(30,30,30,.12)'),
+          fg: dark ? '#ffffff' : '#1f1f1e',
+          descFg: dark ? 'rgba(255,255,255,.65)' : '#6a6a68'
+        };
+      }),
+      heroScopes: ['Kaikki'].concat(this.groups || []).map(sc => Object.assign({ label: sc, click: this.setScope(sc) }, pill(st.scope === sc, dark))),
+      heroLens: [
+        Object.assign({ label: (this.props.questionsPerRound || 10) + ' satunnaista', click: this.setRoundAll(false) }, pill(!st.roundAll, dark)),
+        Object.assign({ label: 'Kaikki ' + nCount + ' lajia', click: this.setRoundAll(true) }, pill(!!st.roundAll, dark))
+      ], isPlay: st.screen === 'play', isResult: st.screen === 'result', isStudy: isStudy,
+      isMc: st.mode === 'mc', isType: st.mode === 'type',
+      inGame: st.screen !== 'start',
+      showClue: (st.screen === 'play' || isStudy) && !!bird,
+      clueLabel: 'Tuntomerkkejä',
+      clueName: reveal ? target : 'Tunnistamaton lintu',
+      clueNameColor: reveal ? 'var(--ink)' : 'var(--faint)',
+      clueGroup: bird ? bird.g : '',
+      clueSize: bird ? bird.size : '',
+      clueMarks: bird ? bird.marks : '',
+      clueSound: bird ? bird.sound : '',
+      clueHab: bird ? bird.hab : '',
+      slot: this.slotFor(target, reveal),
+      imgLoading: !!(bird && this.list(target) === undefined),
+      imgOpacity: bird && this.curUrl(target) && (this.ready || {})[this.curUrl(target)] === true ? '1' : '0',
+      imgMissing: !!(bird && Array.isArray(this.list(target)) && !this.list(target).length),
+      showVariantNav: isStudy && (this.list(target) || []).length > 1,
+      variantLabel: ((this.variantIdx(target) || 0) + 1) + ' / ' + ((this.list(target) || []).length || 1),
+      prevVariant: this.stepVariant(-1), nextVariant: this.stepVariant(1),
+      showSound: soundOn,
+      isMobile: st.vw < 760 && !ans,
+      showTypeMode: st.vw >= 760,
+      showTitle: st.vw >= 760 || isStudy || !!ans,
+      showDetails: st.vw >= 760 || !!st.det,
+      showClueImage: st.vw >= 760 || !st.det,
+      showInfoCol: st.vw >= 760 || !!st.det,
+      cardBg: st.vw < 760 && !st.det ? 'var(--card)' : 'var(--card)',
+      cardBlur: 'var(--blur)',
+      cardBorder: '1px solid var(--surface-bd)',
+      cardShadow: st.vw < 760 && !st.det ? 'none' : 'var(--shadow)',
+      rowPad: st.vw >= 760 ? '40px 22px 22px' : (st.det ? '48px 12px 12px' : '0'),
+      verdictInset: st.vw < 760 ? '8px' : '0',
+      verdictRadius: st.vw < 760 ? '6px' : '0',
+      imgMinH: st.vw < 760 ? '52vh' : '240px',
+      imgBorder: st.vw < 760 ? 'none' : '1px solid var(--surface-bd)',
+      imgRadius: st.vw < 760 ? '0' : '10px',
+      showGroupTag: st.vw >= 760,
+      pickTabImg: this.setDet(false),
+      pickTabInfo: this.setDet(true),
+      tabWrapBg: 'rgba(12,15,19,.72)',
+      tabWrapBd: 'rgba(255,255,255,.24)',
+      tabImgBg: st.det ? 'transparent' : '#f2f4f6', tabImgFg: st.det ? '#e8ecf0' : '#14171b',
+      tabInfoBg: st.det ? '#f2f4f6' : 'transparent', tabInfoFg: st.det ? '#14171b' : '#e8ecf0',
+      imgOrder: st.vw < 760 ? '-1' : '0',
+      creditSize: st.vw < 420 ? '8.5px' : (st.vw < 760 ? '9px' : '10px'),
+      creditLeft: 'auto',
+      imgBasis: st.vw < 760 ? '100%' : 'clamp(150px, 40%, 480px)',
+      toggleAudio: this.toggleAudio,
+      seek: this.seek,
+      audioIcon: mine && st.auState === 'playing' ? 'pause' : (mine && st.auState === 'loading' ? 'more_horiz' : 'play_arrow'),
+      audioLabel: mine
+        ? (st.auState === 'playing' ? 'Pysäytä' : st.auState === 'loading' ? 'Haetaan ääntä…' : st.auState === 'none' ? 'Ääntä ei löytynyt' : 'Kuuntele ääni')
+        : 'Kuuntele ääni',
+      audioBtnBg: mine && st.auState === 'none' ? 'var(--audio-off)' : C.ink,
+      auBars: bars,
+      auCur: mine && st.auState !== 'none' ? this.clock(st.auTime || 0) : '0:00',
+      auNote: mine
+        ? (st.auState === 'loading' ? 'Haetaan ääntä…' : st.auState === 'none' ? 'Ääntä ei löytynyt' : (st.auDur ? this.clock(st.auDur) : 'Lajin ääni'))
+        : 'Lajin ääni',
+      clueSci: bird && ans ? (bird.sci || '') : '',
+      fact: bird && ans ? bird.fact : '',
+      hasFact: !!(bird && ans && bird.fact),
+      studyBg: modeBg('study'), studyBd: modeBd('study'), pickStudy: this.setMode('study'),
+      mcBg: modeBg('mc'), mcBd: modeBd('mc'), pickMc: this.setMode('mc'),
+      typeBg: modeBg('type'), typeBd: modeBd('type'), pickType: this.setMode('type'),
+      startLabel: st.mode === 'study' ? 'Aloita harjoittelu' : 'Aloita kierros',
+      scopes: ['Kaikki'].concat(this.groups || []).map(s => ({
+        label: s, click: this.setScope(s),
+        bg: st.scope === s ? 'var(--ink)' : 'transparent', bd: st.scope === s ? 'var(--ink)' : 'var(--pill-bd)', fg: st.scope === s ? 'var(--btn-fg)' : 'var(--ink-3)'
+      })),
+      showLength: st.mode !== 'study',
+      hideLength: st.mode === 'study',
+      pickShort: this.setRoundAll(false), pickAll: this.setRoundAll(true),
+      lenShortLabel: (this.props.questionsPerRound || 10) + ' satunnaista',
+      lenAllLabel: 'Kaikki ' + nCount + ' lajia',
+      lenShortBg: st.roundAll ? 'transparent' : 'var(--ink)', lenShortBd: st.roundAll ? 'var(--pill-bd)' : 'var(--ink)', lenShortFg: st.roundAll ? 'var(--ink-3)' : 'var(--btn-fg)',
+      lenAllBg: st.roundAll ? 'var(--ink)' : 'transparent', lenAllBd: st.roundAll ? 'var(--ink)' : 'var(--pill-bd)', lenAllFg: st.roundAll ? 'var(--btn-fg)' : 'var(--ink-3)',
+      scopeInfo: nCount + ' lajia valittuna · kierros ' + this.total() + ' kysymystä',
+      colGap: st.vw < 760 ? '12px' : '22px',
+      rowMinH: st.vw < 760 ? 'auto' : (st.screen === 'play' ? 'calc(100vh - 218px)' : (isStudy ? 'calc(100vh - 156px)' : 'auto')),
+      panelFlex: '0 1 358px',
+      panelMax: 'none',
+      panelMin: st.vw < 760 ? '0' : '260px',
+      panelOrder: st.vw < 760 && st.screen === 'result' ? '-1' : '0',
+      gridOrder: '0',
+      btnsInline: !(st.screen === 'result' && st.vw < 760),
+      btnsBottom: st.screen === 'result' && st.vw < 760,
+      share: this.share,
+      shareLabel: st.shareMsg || 'Jaa tulos',
+      shareIcon: st.shareMsg ? 'check' : 'ios_share',
+      resultLine: st.correct + ' / ' + st.queue.length + ' oikein',
+      resultBirds: (st.screen === 'result' ? st.queue : []).map(n => {
+        const bad = st.missed.indexOf(n) >= 0;
+        const on = st.focus === n;
+        const dim = st.focus && !on;
+        return {
+          label: n, slot: this.slotFor(n, true, true),
+          bd: on ? '#a5674f' : (bad ? 'var(--grid-bad-bd)' : 'var(--grid-ok-bd)'), markBg: bad ? '#a4523c' : '#2f7d4d', mark: bad ? '✕' : '✓',
+          fg: on ? 'var(--bad-fg)' : (bad ? 'var(--bad-fg)' : 'var(--ink-2)'),
+          op: dim ? '0.35' : '1',
+          shadow: on ? '0 0 0 3px rgba(156,86,70,.2)' : 'none',
+          filter: bad ? 'grayscale(.6)' : 'none',
+          tint: 'transparent',
+          tag: bad ? 'Väärin' : 'Oikein',
+          tagFg: bad ? '#a4523c' : '#2f7d4d'
+        };
+      }),
+      headerCols: st.vw >= 760 ? 'minmax(240px, 1fr) 358px' : 'minmax(0, 1fr) minmax(0, auto)',
+      modeTitle: st.scope === 'Kaikki' ? 'Suomen yleisimmät linnut' : st.scope,
+      scopeBarLabel: st.scope === 'Kaikki' ? 'Kaikki lajiryhmät' : st.scope,
+      studyCounter: 'Laji ' + (st.idx + 1) + ' / ' + st.queue.length,
+      studyList: (isStudy ? st.queue : []).map(n => ({
+        label: n, click: this.pick(n),
+        bg: n === target ? 'var(--btn-bg)' : 'transparent', bd: n === target ? 'var(--btn-bg)' : 'var(--wave)', fg: n === target ? 'var(--btn-fg)' : 'var(--ink-3)'
+      })),
+      prev: this.prev, start: this.start, quit: this.quit, next: this.next,
+      prompt: 'Mikä lintu on kyseessä?',
+      progressLabel: 'Kysymys ' + (st.idx + 1) + ' / ' + st.queue.length,
+      progressPct: st.queue.length ? Math.round((st.idx + (ans ? 1 : 0)) / st.queue.length * 100) + '%' : '0%',
+      target: target,
+      hint: st.mode === 'type' ? 'Kirjoita lajin nimi kokonaisena, esim. Talitiainen.' : '',
+      showHint: st.mode === 'type' && !ans,
+      options: this.options().map(o => {
+        let bg = 'var(--opt-bg)', bd = 'var(--surface-bd)', fg = C.ink;
+        if (ans) {
+          if (o === target) { bg = 'var(--ok-bg)'; bd = 'var(--opt-ok-bd)'; fg = 'var(--ok-fg)'; }
+          else if (o === ans.given) { bg = 'var(--bad-bg)'; bd = 'var(--opt-bad-bd)'; fg = 'var(--bad-fg)'; }
+          else { fg = 'var(--dim)'; }
+        }
+        const isRight = !!ans && o === target, isWrongPick = !!ans && o !== target && o === ans.given;
+        return {
+          hasTag: isRight || isWrongPick, tag: isRight ? 'Oikein' : 'Väärin',
+          tagFg: isRight ? 'var(--ok-fg)' : 'var(--bad-fg)', tagBg: isRight ? 'var(--tag-ok-bg)' : 'var(--tag-bad-bg)', tagBd: isRight ? 'var(--tag-ok-bd)' : 'var(--tag-bad-bd)',
+          label: o, bg: bg, bd: bd, fg: fg, cursor: ans ? 'default' : 'pointer',
+          click: ev => { try { if (ev && ev.currentTarget && ev.currentTarget.blur) ev.currentTarget.blur(); } catch (e) { } this.answer(o); }
+        };
+      }),
+      input: st.input, onInput: this.onInput, onKey: this.onKey, submit: this.submit,
+      answered: !!ans,
+      submitBg: ans ? 'transparent' : C.ink, submitBd: ans ? 'var(--pill-bd)' : C.ink, submitFg: ans ? 'var(--dim-2)' : 'var(--btn-fg)', submitCursor: ans ? 'default' : 'pointer',
+      verdict: ans ? (ans.ok ? 'Oikein!' : 'Väärin!') : '',
+      notAnswered: !ans,
+      waitingNote: '',
+      verdictColor: ans ? (ans.ok ? C.ok : C.bad) : '#aaa9a7',
+      titleOpacity: '1',
+      verdictBg: ans ? (ans.ok ? 'var(--ok-bg)' : 'var(--bad-bg)') : '#d7d7d6',
+      verdictBd: ans ? (ans.ok ? 'var(--ok-bd)' : 'var(--bad-bd)') : '#cbcbca',
+      verdictIcon: ans && ans.ok ? 'check_circle' : 'error',
+      verdictNote: ans ? (ans.ok ? ('+' + ans.pts + ' pistettä') : ('Oikea vastaus: ' + target)) : '',
+      isTypeVerdict: !!(st.mode === 'type' && ans),
+      isTypeWrong: !!(st.mode === 'type' && ans && !ans.ok),
+      score: st.pop && typeof st.disp === 'number' ? Math.round(st.disp) : st.score,
+      scoreTf: st.pop ? 'scale(1.32)' : 'scale(1)',
+      scoreCol: st.pop ? 'var(--ok)' : 'var(--score)',
+      streak: st.streak, best: st.best,
+      showPts: !!(ans && ans.ok && ans.pts),
+      ptsLabel: ans && ans.pts ? '+' + ans.pts : '',
+      streakLabel: Math.min(3, st.streak) + 'x kerroin',
+      showStreakChip: st.streak >= 2 && st.hideScore !== true && st.vw >= 760,
+      showBurst: !!(st.burst && st.streak >= 2),
+      scoreVisible: st.hideScore !== true,
+      scoreMenuOpen: !!st.scoreMenu, toggleScoreMenu: this.toggleScoreMenu,
+      pickShowScore: this.setHideScore(false), pickHideScore: this.setHideScore(true),
+      toggleThemeMenu: this.toggleThemeMenu, themeMenuOpen: !!st.themeMenu,
+      kebabPos: st.vw < 760 ? 'absolute' : 'fixed',
+      kebabFg: st.theme === 'light' && st.screen !== 'start' ? 'rgba(32,32,29,.45)' : 'rgba(255,255,255,.45)',
+      kebabFgHover: st.theme === 'light' && st.screen !== 'start' ? 'rgba(32,32,29,.9)' : 'rgba(255,255,255,.9)',
+      pickLight: this.setTheme('light'), pickDark: this.setTheme('dark'),
+      lightCheck: st.theme === 'light' ? '✓' : '', darkCheck: st.theme === 'light' ? '' : '✓',
+      lightBg: st.theme === 'light' ? 'var(--surface)' : 'transparent', darkBg: st.theme === 'light' ? 'transparent' : 'var(--surface)',
+      showGameBg: false,
+      showScoreCheck: st.hideScore ? '' : '✓', hideScoreCheck: st.hideScore ? '✓' : '',
+      showScoreBg: st.hideScore ? 'transparent' : 'var(--surface)', hideScoreBg: st.hideScore ? 'var(--surface)' : 'transparent',
+      rulesOpen: !!st.rules, toggleRules: this.toggleRules,
+      rulesRight: st.vw >= 760 ? '26px' : '12px',
+      rulesLeft: st.vw >= 760 ? 'auto' : '12px',
+      rulesWidth: st.vw >= 760 ? '306px' : 'auto',
+      showBarExtras: st.vw >= 760,
+      barSpacer: st.vw < 760,
+      pagePad: st.screen === 'play' ? (st.vw >= 760 ? '20px 26px 88px' : '16px 16px 88px') : (heroOn ? '0' : (st.vw >= 760 ? '20px 26px 26px' : '16px 16px 22px')),
+      barPad: st.vw >= 760 ? '0 26px' : '0 14px',
+      nextLabel: st.idx + 1 >= st.queue.length ? 'Näytä tulos' : 'Seuraava lintu',
+      nextOff: !ans,
+      nextBg: ans ? C.ink : 'transparent', nextBd: ans ? C.ink : 'var(--pill-bd)', nextFg: ans ? 'var(--btn-fg)' : 'var(--dim-2)', nextCursor: ans ? 'pointer' : 'default',
+      resultScoreNum: st.pop && typeof st.disp === 'number' ? Math.round(st.disp) : st.score,
+      statHitsValue: st.correct + ' / ' + st.queue.length,
+      statStreakValue: String(st.roundBest || 0),
+      rankEmoji: this.rank(st).emoji, rankTitle: this.rank(st).title, rankNote: this.rank(st).note,
+      missed: st.missed.map(m => ({
+        label: m,
+        click: () => this.setState({ focus: st.focus === m ? null : m }),
+        bg: st.focus === m ? '#9c5646' : 'var(--miss-bg)', bd: st.focus === m ? '#9c5646' : 'var(--miss-bd)', fg: st.focus === m ? '#ffffff' : 'var(--miss-fg)'
+      })),
+      hasMissed: st.missed.length > 0
+    };
+  }
+}
+
+</script>
+</body>
+</html>
