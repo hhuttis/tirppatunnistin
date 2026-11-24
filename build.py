@@ -7,7 +7,8 @@ Voit ajaa saman myös omalla koneella: python3 build.py
 
 Mitä tämä tekee:
   1. etsii app/-kansiosta uusimman Claude Designista ladatun HTML-tiedoston
-  2. kopioi sen nimellä index.html ja lisää siihen PWA-tiedot (manifest, ikonit, service worker)
+  2. kopioi sen nimellä index.html ja lisää siihen PWA-tiedot (manifest, ikonit,
+     service worker) sekä kävijälaskurin
   3. kopioi mukaan app/-kansion muut tiedostot sekä ikonit, manifestin ja sw.js:n
 """
 
@@ -26,6 +27,10 @@ JUURI_TIEDOSTOT = ["manifest.webmanifest", "sw.js"]
 JUURI_KANSIOT = ["icons"]
 PRECACHE_MAX = 3_000_000  # yli 3 MB tiedostoja ei tallenneta offline-välimuistiin
 OHITA = {".DS_Store", "Thumbs.db", ".thumbnail"}
+
+# Kävijälaskuri (GoatCounter). Liitetään automaattisesti joka julkaisuun.
+# Tyhjä merkkijono poistaa laskurin käytöstä.
+GOATCOUNTER = "https://tirppatunnistin.goatcounter.com/count"
 
 
 def virhe(viesti):
@@ -79,6 +84,9 @@ def pwa_tagit(mani):
     ]
     if kuvaus:
         rivit.append('<meta name="description" content="%s">' % kuvaus)
+    if GOATCOUNTER:
+        rivit.append('<script data-goatcounter="%s" async src="//gc.zgo.at/count.js"></script>'
+                     % GOATCOUNTER)
     return nimi, rivit
 
 
